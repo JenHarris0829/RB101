@@ -24,8 +24,8 @@ elsif operator == '2'
   result = number1.to_i() - number2.to_i()
 elsif operator == '3'
   result = number1.to_i() * number2.to_i()
-else 
+else
   result = number1.to_f() / number2.to_f()
-end 
+end
 
 Kernel.puts("The result is #{result}")
