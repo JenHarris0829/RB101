@@ -17,7 +17,7 @@ en:
   op3: "Multiplying..."
   op4: "Dividing..."
   result: "The result is "
-  go_again: "Do you want to perform another calculation? (Y to calculate again)"
+  go_again: "Do you want to perform another calculation? (Y to start over)"
   goodbye: "Thank you for using the calculator. Good bye!"
 es:
   welcome: "¡Bienvenido a Calculadora! Tipo su nombre:"
@@ -38,5 +38,5 @@ es:
   op3: "Multiplicando..."
   op4: "Dividirse..."
   result: "El resultado es "
-  go_again: "¿Quieres realizar otro cálculo? (Y para calcular nuevamente)"
+  go_again: "¿Quieres realizar otro cálculo? (S para empezar de nuevo)"
   goodbye: "Gracias por usar la calculadora. ¡Adiós!"
