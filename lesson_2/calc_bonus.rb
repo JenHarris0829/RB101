@@ -38,6 +38,7 @@ def get_number
     number = gets.chomp.strip
 
     break if valid_int_or_float?(number)
+    prompt(messages('valid_number', LANGUAGE))
   end
 
   number.to_f
