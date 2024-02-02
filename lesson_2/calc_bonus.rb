@@ -2,6 +2,10 @@ LANGUAGE = 'en'
 
 require 'yaml'
 MESSAGES = YAML.load_file('calc_bonus.yml')
+ANSWERS = {
+  true => ['y', 'yes', 'si', 's'],
+  false => ['no', 'n']
+}
 
 # Methods
 def messages(message, lang = 'en')
@@ -27,6 +31,7 @@ def get_name
     if name.empty?
       prompt(messages('valid_name', LANGUAGE))
     else
+      prompt(messages('hello', LANGUAGE) << name << '!')
       return name
     end
   end
@@ -60,6 +65,20 @@ def valid_int_or_float?(input)
   integer?(input) || float?(input)
 end
 
+def get_operator
+  loop do
+    operator = gets.chomp
+
+    if %w(1 2 3 4).include?(operator)
+      return operator
+    else
+      prompt(messages('must_choose', LANGUAGE))
+    end
+  end
+
+  prompt(operation_to_message(operator))
+end
+
 def calculate(operator, number1, number2)
   case operator
   when '1' then number1.to_f + number2.to_f
@@ -82,11 +101,27 @@ def operation_to_message(op)
   end
 end
 
+def go_again?
+  answer = ' '
+
+  loop do
+    prompt(messages('go_again', LANGUAGE))
+    answer = gets.chomp.downcase
+    if ANSWERS[true].include?(answer)
+      return true
+    elsif ANSWERS[false].include?(answer)
+      return false
+    else
+      prompt(messages('invalid_answer', LANGUAGE))
+    end
+  end
+end
+
 # Start of Calculator
+clear
 prompt(messages('welcome', LANGUAGE))
 
-name = get_name
-prompt(messages('hello', LANGUAGE) + name.to_s + '!')
+get_name
 
 loop do
   prompt(messages('first_number', LANGUAGE))
@@ -99,26 +134,14 @@ loop do
 
   prompt(messages('operator', LANGUAGE))
 
-  operator = ''
-  loop do
-    operator = gets.chomp
-
-    if %w(1 2 3 4).include?(operator)
-      break
-    else
-      prompt(messages('must_choose', LANGUAGE))
-    end
-  end
+  operator = get_operator
 
   prompt(operation_to_message(operator))
 
   result = calculate(operator, number1, number2)
   prompt(messages('result', LANGUAGE) + result.to_s)
 
-  prompt(messages('go_again', LANGUAGE))
-  answer = gets.chomp
-  break unless answer.downcase().start_with?('y' || 's')
-
+  break unless go_again?
   clear
 end
 
