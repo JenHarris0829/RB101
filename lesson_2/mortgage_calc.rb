@@ -125,9 +125,11 @@ end
 def summarize_data(loan, apr, loan_months)
   prompt(messages('summary'))
   sleep 0.5
-  prompt(messages('loan_total') << '$' << formatting_decimals(loan.to_s))
-  prompt(messages('apr_summary') << formatting_percent(apr.to_s))
-  prompt(messages('loan_months') << loan_months.to_s)
+  prompt("The loan is: $#{formatting_decimals(loan.to_s)}")
+  sleep 0.1
+  prompt("The annual percentage rate is: #{formatting_percent(apr.to_s)}")
+  sleep 0.1
+  prompt("The duration in months is: #{loan_months}")
 end
 
 def go_again?
@@ -165,7 +167,7 @@ loop do
   summarize_data(loan, apr, loan_months)
   monthly_payment = calculate_monthly(loan, apr, loan_months)
   monthly_payment = formatting_decimals(monthly_payment)
-  prompt(messages('monthly_payment') << '$' << monthly_payment.to_s << '.')
+  prompt("Therefore, the monthly payment is: $#{monthly_payment}.")
 
   break unless go_again?
   clear
