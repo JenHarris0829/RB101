@@ -1,19 +1,3 @@
-# P: either comp or user gets 3 wins, game ends
-#    winner is grand winner
-#    keep track of user's and computer's wins
-#    no incrementing logic in display_results
-#    simple methods, only one task
-# E: edge cases?
-# D: integers and strings
-#    store wins in hash
-#    wins => {comp: increment wins, user: increment wins}
-#    pull results out of hash and display winner
-# A: tell user they will play until there are 3 wins for either player
-#    play game
-#    store wins in hash with incrementation
-#    once 3 wins for a player is reached, game ends
-#    display who is grand winner and break code
-
 require 'yaml'
 MESSAGES = YAML.load_file('rps_bonus.yml')
 
