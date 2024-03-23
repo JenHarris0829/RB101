@@ -35,10 +35,9 @@ def get_move
   move = ''
   loop do
     prompt(messages('enter_one'))
-    sleep 3
     move = gets.chomp.downcase
 
-    if valid_input?(move)
+    if valid_move?(move)
       break
     else
       prompt(messages('valid_choice'))
@@ -47,7 +46,7 @@ def get_move
   move
 end
 
-def valid_input?(move)
+def valid_move?(move)
   VALID_INPUTS.key?(move)
 end
 
@@ -69,6 +68,8 @@ def display_results(player, computer)
   else
     prompt("It's a tie! No winners here!")
   end
+  sleep 2
+  clear
 end
 
 def increment_wins(player, computer, wins)
@@ -77,53 +78,61 @@ def increment_wins(player, computer, wins)
   elsif win?(computer, player)
     wins[:computer] += 1
   end
+  clear
 end
 
-def play_again?
-  prompt(messages('play_again?'))
-  answer = gets.chomp
-  answer.downcase.start_with?('y')
+def reset_hash_values(wins)
+  wins.replace({ player: 0, computer: 0 })
 end
 
+# Start of game
 prompt(messages('begin'))
-sleep 1
+sleep 2
+clear
 prompt(messages('winning'))
 sleep 2
+clear
 prompt(messages('game_rules'))
 sleep 4
-
-wins = { player: 0, computer: 0 }
+clear
 
 loop do
-  user_move = get_move
-  full_word = convert_abbrevs(user_move)
+  wins = { player: 0, computer: 0 }
 
-  computer_choice = COMPUTER_CHOICES.sample
+  loop do
+    user_move = get_move
+    full_word = convert_abbrevs(user_move)
 
-  prompt("You chose: #{full_word}; Computer chose: #{computer_choice}")
+    computer_choice = COMPUTER_CHOICES.sample
 
-  display_results(full_word, computer_choice)
-  sleep 2
-  clear
+    prompt("You chose: #{full_word}; Computer chose: #{computer_choice}")
 
-  increment_wins(full_word, computer_choice, wins)
-  sleep 2
+    display_results(full_word, computer_choice)
 
-  current_score_prompt = <<-MSG
-  "The current score is...
-  player: #{wins[:player]}
-  computer: #{wins[:computer]}
-  MSG
+    increment_wins(full_word, computer_choice, wins)
 
-  prompt(current_score_prompt)
+    current_score_prompt = <<-MSG
+    The current score is...
+    player: #{wins[:player]}
+    computer: #{wins[:computer]}
+    MSG
 
-  if wins[:player] == 3
-    prompt("Congratuations! You are the grand winner!")
-    break unless play_again?
-  elsif wins[:computer] == 3
-    prompt("Computer is the grand winner! Better luck next time!")
-    break unless play_again?
+    prompt(current_score_prompt)
+    sleep 2
+    clear
+
+    break if wins[:player] == 3 || wins[:computer] == 3
   end
+
+  prompt(messages('winner_player')) if wins[:player] == 3
+  prompt(messages("winner_computer")) if wins[:computer] == 3
+
+  prompt(messages('play_again?'))
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
+  reset_hash_values(wins)
+
+  clear
 end
 
 clear
